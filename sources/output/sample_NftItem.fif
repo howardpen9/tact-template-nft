@@ -1,0 +1,740 @@
+PROGRAM{
+  DECLPROC __tact_my_balance
+  DECLPROC __tact_not_null
+  DECLPROC __tact_context_get
+  DECLPROC __tact_verify_address
+  DECLPROC __tact_load_address
+  DECLPROC __tact_load_address_opt
+  DECLPROC __tact_store_address
+  DECLPROC __tact_compute_contract_address
+  DECLPROC __tact_address_eq
+  DECLPROC __tact_address_neq
+  DECLPROC __tact_dict_set_code
+  DECLPROC __tact_dict_get_code
+  DECLPROC __gen_read_Transfer
+  DECLPROC __gen_write_OwnershipAssigned
+  DECLPROC __gen_writecell_OwnershipAssigned
+  DECLPROC __gen_read_OwnershipAssigned
+  DECLPROC __gen_write_NFTExcesses
+  DECLPROC __gen_writecell_NFTExcesses
+  DECLPROC __gen_read_GetStaticData
+  DECLPROC __gen_write_ReportStaticData
+  DECLPROC __gen_writecell_ReportStaticData
+  DECLPROC __gen_read_UpdateSubContent
+  DECLPROC __gen_write_NftItem
+  DECLPROC __gen_read_NftItem
+  DECLPROC __gen_load_NftItem
+  DECLPROC __gen_store_NftItem
+  DECLPROC storeBool
+  DECLPROC contractAddress
+  DECLPROC send
+  DECLPROC __gen_Context_readForwardFee
+  DECLPROC __gen_NftItem_init
+  DECLPROC __gen_NftItem_init_child
+  DECLPROC __gen_NftItem_get_nft_data
+  102351 DECLMETHOD __gen_get_get_nft_data
+  DECLPROC __gen_NftItem_get_nft_owner
+  92437 DECLMETHOD __gen_get_get_nft_owner
+  DECLPROC __gen_NftItem_receive_Transfer
+  DECLPROC __gen_NftItem_receive_OwnershipAssigned
+  DECLPROC __gen_NftItem_receive_GetStaticData
+  DECLPROC __gen_NftItem_receive_UpdateSubContent
+  DECLPROC recv_internal
+  74889 DECLMETHOD init_NftItem
+  113617 DECLMETHOD supported_interfaces
+  DECLPROC get_abi_ipfs
+  DECLGLOBVAR __tact_context
+  DECLGLOBVAR __tact_context_sys
+  __tact_my_balance PROCINLINE:<{
+    BALANCE
+    FIRST
+  }>
+  __tact_not_null PROC:<{
+    DUP
+    ISNULL
+    128 THROWIF
+  }>
+  __tact_context_get PROCINLINE:<{
+    __tact_context GETGLOB
+    4 UNTUPLE
+  }>
+  __tact_verify_address PROCINLINE:<{
+    SBITS
+    267 PUSHINT
+    NEQ
+    134 THROWIFNOT
+  }>
+  __tact_load_address PROCINLINE:<{
+    LDMSGADDR
+    SWAP
+  }>
+  __tact_load_address_opt PROCINLINE:<{
+    LDMSGADDR
+    OVER
+    2 PLDU
+    0 NEQINT
+    IF:<{
+      SWAP
+    }>ELSE<{
+      NIP
+      PUSHNULL
+    }>
+  }>
+  __tact_store_address PROCINLINE:<{
+    STSLICER
+  }>
+  __tact_compute_contract_address PROC:<{
+    NEWC
+    0 PUSHINT
+    SWAP
+    2 STU
+    3 PUSHINT
+    SWAP
+    2 STU
+    0 PUSHINT
+    SWAP
+    1 STU
+    s1 s2 XCHG
+    STREF
+    STREF
+    ENDC
+    HASHCU
+    NEWC
+    2 PUSHINT
+    SWAP
+    2 STU
+    0 PUSHINT
+    SWAP
+    1 STU
+    s1 s2 XCHG
+    8 STI
+    256 STU
+    ENDC
+    CTOS
+  }>
+  __tact_address_eq PROCINLINE:<{
+    SDEQ
+  }>
+  __tact_address_neq PROCINLINE:<{
+    SDEQ
+    NOT
+  }>
+  __tact_dict_set_code PROCINLINE:<{
+    s0 s2 XCHG
+    16 PUSHINT
+    DICTUSETREF
+  }>
+  __tact_dict_get_code PROCINLINE:<{
+    SWAP
+    16 PUSHINT
+    DICTUGETREF
+    NULLSWAPIFNOT
+    100 THROWIFNOT
+  }>
+  __gen_read_Transfer PROCINLINE:<{
+    32 LDU
+    SWAP
+    1607220500 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    64 LDU
+    257 PUSHINT
+    LDIX
+    __tact_load_address INLINECALLDICT
+    SWAP
+    __tact_load_address_opt INLINECALLDICT
+    PUSHNULL
+    s0 s2 XCHG
+    1 LDI
+    SWAP
+    IF:<{
+      1 2 BLKDROP2
+      LDREF
+      s1 s2 XCHG
+    }>
+    LDGRAMS
+    PUSHNULL
+    SWAP
+    1 LDI
+    SWAP
+    IF:<{
+      NIP
+      DUP
+    }>
+    s0 s7 XCHG
+    s0 s6 XCHG
+    s0 s5 XCHG
+    s4 s4 s4 XCHG3
+  }>
+  __gen_write_OwnershipAssigned PROCINLINE:<{
+    85167505 PUSHINT
+    s0 s4 XCHG2
+    32 STU
+    s1 s2 XCHG
+    64 STU
+    SWAP
+    __tact_store_address INLINECALLDICT
+    SWAP
+    STSLICER
+  }>
+  __gen_writecell_OwnershipAssigned PROCINLINE:<{
+    NEWC
+    3 -ROLL
+    __gen_write_OwnershipAssigned INLINECALLDICT
+    ENDC
+  }>
+  __gen_read_OwnershipAssigned PROCINLINE:<{
+    32 LDU
+    SWAP
+    85167505 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    64 LDU
+    __tact_load_address INLINECALLDICT
+    s2 s0 s2 XC2PU
+  }>
+  __gen_write_NFTExcesses PROCINLINE:<{
+    3576854235 PUSHINT
+    ROT
+    32 STU
+    64 STU
+  }>
+  __gen_writecell_NFTExcesses PROCINLINE:<{
+    NEWC
+    SWAP
+    __gen_write_NFTExcesses INLINECALLDICT
+    ENDC
+  }>
+  __gen_read_GetStaticData PROCINLINE:<{
+    32 LDU
+    SWAP
+    801842850 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    64 LDU
+    SWAP
+  }>
+  __gen_write_ReportStaticData PROCINLINE:<{
+    2339837749 PUSHINT
+    s0 s4 XCHG2
+    32 STU
+    s1 s2 XCHG
+    64 STU
+    257 PUSHINT
+    STIX
+    SWAP
+    __tact_store_address INLINECALLDICT
+  }>
+  __gen_writecell_ReportStaticData PROCINLINE:<{
+    NEWC
+    3 -ROLL
+    __gen_write_ReportStaticData INLINECALLDICT
+    ENDC
+  }>
+  __gen_read_UpdateSubContent PROCINLINE:<{
+    32 LDU
+    SWAP
+    3471953359 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    LDREF
+    SWAP
+  }>
+  __gen_write_NftItem PROCINLINE:<{
+    s5 s4 XCHG2
+    __tact_store_address INLINECALLDICT
+    ROT
+    __tact_store_address INLINECALLDICT
+    257 PUSHINT
+    STIX
+    s1 s2 XCHG
+    1 STI
+    OVER
+    ISNULL
+    IF:<{
+      FALSE
+      s2 POP
+      1 STI
+    }>ELSE<{
+      TRUE
+      SWAP
+      1 STI
+      STREF
+    }>
+  }>
+  __gen_read_NftItem PROCINLINE:<{
+    __tact_load_address INLINECALLDICT
+    SWAP
+    __tact_load_address INLINECALLDICT
+    SWAP
+    257 PUSHINT
+    LDIX
+    1 LDI
+    PUSHNULL
+    SWAP
+    1 LDI
+    SWAP
+    IF:<{
+      NIP
+      LDREF
+    }>
+    5 -ROLL
+  }>
+  __gen_load_NftItem PROCINLINE:<{
+    c4 PUSH
+    CTOS
+    LDREF
+    SWAP
+    __tact_context_sys SETGLOB
+    __gen_read_NftItem INLINECALLDICT
+    1 5 BLKDROP2
+  }>
+  __gen_store_NftItem PROCINLINE:<{
+    NEWC
+    __tact_context_sys GETGLOB
+    SWAP
+    STREF
+    5 -ROLL
+    __gen_write_NftItem INLINECALLDICT
+    ENDC
+    c4 POP
+  }>
+  storeBool PROC:<{
+    IFJMP:<{
+      -1 PUSHINT
+      SWAP
+      1 STI
+    }>
+    0 PUSHINT
+    SWAP
+    1 STI
+  }>
+  contractAddress PROC:<{
+    0 PUSHINT
+    -ROT
+    __tact_compute_contract_address CALLDICT
+  }>
+  send PROC:<{
+    NEWC
+    1 PUSHINT
+    SWAP
+    2 STI
+    s0 s7 XCHG2
+    storeBool CALLDICT
+    0 PUSHINT
+    SWAP
+    3 STI
+    s0 s5 XCHG2
+    __tact_store_address INLINECALLDICT
+    s0 s3 XCHG2
+    STGRAMS
+    0 PUSHINT
+    SWAP
+    105 STI
+    s3 PUSH
+    ISNULL
+    NOT
+    s5 PUSH
+    ISNULL
+    NOT
+    OR
+    IF:<{
+      TRUE
+      storeBool CALLDICT
+      NEWC
+      FALSE
+      storeBool CALLDICT
+      FALSE
+      storeBool CALLDICT
+      s4 PUSH
+      ISNULL
+      NOT
+      IF:<{
+        TRUE
+        storeBool CALLDICT
+        s0 s4 XCHG
+        __tact_not_null CALLDICT
+        s0 s4 XCHG2
+        STREF
+      }>ELSE<{
+        s4 POP
+        s0 s3 XCHG
+        FALSE
+        storeBool CALLDICT
+      }>
+      s4 PUSH
+      ISNULL
+      NOT
+      IF:<{
+        TRUE
+        storeBool CALLDICT
+        s0 s4 XCHG
+        __tact_not_null CALLDICT
+        s0 s4 XCHG2
+        STREF
+      }>ELSE<{
+        s4 POP
+        s0 s3 XCHG
+        FALSE
+        storeBool CALLDICT
+      }>
+      FALSE
+      storeBool CALLDICT
+      s0 s2 XCHG
+      TRUE
+      storeBool CALLDICT
+      s0 s2 XCHG
+      ENDC
+      ROT
+      STREF
+    }>ELSE<{
+      s3 POP
+      s3 POP
+      SWAP
+      FALSE
+      storeBool CALLDICT
+    }>
+    OVER
+    ISNULL
+    NOT
+    IF:<{
+      TRUE
+      storeBool CALLDICT
+      SWAP
+      __tact_not_null CALLDICT
+      SWAP
+      STREF
+    }>ELSE<{
+      NIP
+      FALSE
+      storeBool CALLDICT
+    }>
+    ENDC
+    SWAP
+    SENDRAWMSG
+  }>
+  __gen_Context_readForwardFee PROC:<{
+    3 1 BLKDROP2
+    LDGRAMS
+    NIP
+    1 PUSHINT
+    SDSKIPFIRST
+    LDGRAMS
+    NIP
+    LDGRAMS
+    DROP
+    3 MULCONST
+    1 RSHIFT#
+  }>
+  __gen_NftItem_init PROC:<{
+    PUSHNULL
+    s0 s5 XCHG
+    NEWC
+    STREF
+    s0 s5 XCHG
+    __gen_write_NftItem INLINECALLDICT
+    ENDC
+  }>
+  __gen_NftItem_init_child PROC:<{
+    s0 s4 XCHG
+    CTOS
+    LDDICT
+    DROP
+    DUP
+    31210 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    NEWDICT
+    s0 s2 XCHG
+    31210 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    s1 s2 XCHG
+    31210 PUSHINT
+    SWAP
+    __tact_dict_set_code INLINECALLDICT
+    NEWC
+    STDICT
+    ENDC
+    4 -ROLL
+    s0 s5 XCHG
+    __gen_NftItem_init CALLDICT
+  }>
+  __gen_NftItem_get_nft_data PROC:<{
+    s4 s4 s0 XCHG3
+    s1 s3 XCHG
+  }>
+  __gen_get_get_nft_data PROC:<{
+    __gen_load_NftItem INLINECALLDICT
+    __gen_NftItem_get_nft_data CALLDICT
+  }>
+  __gen_NftItem_get_nft_owner PROC:<{
+    s3 s4 XCHG
+    4 BLKDROP
+  }>
+  __gen_get_get_nft_owner PROC:<{
+    __gen_load_NftItem INLINECALLDICT
+    __gen_NftItem_get_nft_owner CALLDICT
+  }>
+  __gen_NftItem_receive_Transfer PROC:<{
+    s2 POP
+    __tact_context_get INLINECALLDICT
+    10987 PUSHINT
+    s3 s15 PUSH2
+    __tact_address_eq INLINECALLDICT
+    THROWANYIFNOT
+    __tact_context_sys GETGLOB
+    s15 s14 s9 PUSH3
+    s15 PUSH
+    __gen_NftItem_init_child CALLDICT
+    2DUP
+    contractAddress CALLDICT
+    s6 s5 s(-1) XCPUXC
+    s5 s4 PUXC
+    __gen_Context_readForwardFee CALLDICT
+    16059 PUSHINT
+    SWAP
+    10000000 PUSHINT
+    ADD
+    10000000 PUSHINT
+    ADD
+    s1 s4 XCHG
+    GREATER
+    s1 s3 XCHG
+    THROWANYIFNOT
+    s4 PUSH
+    0 EQINT
+    IF:<{
+      s2 POP
+      s3 POP
+      s4 POP
+      s9 PUSH
+      9290 PUSHINT
+      s0 s7 XCHG
+      EQUAL
+      s1 s6 XCHG
+      THROWANYIFNOT
+      TRUE
+      0 PUSHINT
+      s7 s11 XCHG2
+      64 PUSHINT
+      s0 s4 XCHG
+      __gen_writecell_OwnershipAssigned INLINECALLDICT
+      s3 s5 XCHG
+      s4 s10 XCHG
+      s0 s1 s3 XCHG3
+      send CALLDICT
+    }>ELSE<{
+      s0 s4 XCHG
+      0 GTINT
+      IF:<{
+        10987 PUSHINT
+        s2 s14 XCPU
+        __tact_address_eq INLINECALLDICT
+        s1 s2 XCHG
+        THROWANYIFNOT
+        13164 PUSHINT
+        s5 s12 XCPU
+        __tact_address_eq INLINECALLDICT
+        s1 s5 XCHG
+        THROWANYIFNOT
+        s9 PUSH
+        9290 PUSHINT
+        s0 s7 XCHG
+        EQUAL
+        s1 s6 XCHG
+        THROWANYIFNOT
+        TRUE
+        0 PUSHINT
+        s7 s11 XCHG2
+        64 PUSHINT
+        s0 s4 XCHG
+        __gen_writecell_OwnershipAssigned INLINECALLDICT
+        s1 s5 XCHG
+        s4 s10 XCHG
+        s0 s3 s3 XCHG3
+        send CALLDICT
+      }>ELSE<{
+        9 BLKDROP
+      }>
+    }>
+  }>
+  __gen_NftItem_receive_OwnershipAssigned PROC:<{
+    NIP
+    __tact_context_get INLINECALLDICT
+    DROP
+    s2 POP
+    MYADDR
+    s1 s(-1) PUXC
+    __tact_address_neq INLINECALLDICT
+    IF:<{
+      __tact_context_sys GETGLOB
+      s9 s8 s7 PUSH3
+      s9 PUSH
+      __gen_NftItem_init_child CALLDICT
+      SWAP
+      24541 PUSHINT
+      s0 s2 XCHG
+      contractAddress CALLDICT
+      ROT
+      __tact_address_eq INLINECALLDICT
+      THROWANYIFNOT
+    }>ELSE<{
+      DROP
+    }>
+    __tact_my_balance INLINECALLDICT
+    OVER
+    SUB
+    10000000 PUSHINT
+    TUCK
+    MIN
+    SUB
+    10000000 PUSHINT
+    ADD
+    SUB
+    SWAP
+    ISNULL
+    NOT
+    OVER
+    0 GTINT
+    AND
+    IF:<{
+      FALSE
+      0 PUSHINT
+      s0 s3 XCHG
+      __gen_writecell_NFTExcesses INLINECALLDICT
+      s3 s0 s7 XC2PU
+      3 -ROLL
+      PUSHNULL
+      PUSHNULL
+      send CALLDICT
+    }>ELSE<{
+      2DROP
+    }>
+  }>
+  __gen_NftItem_receive_GetStaticData PROC:<{
+    __tact_context_sys GETGLOB
+    s6 s5 s4 PUSH3
+    s6 PUSH
+    __gen_NftItem_init_child CALLDICT
+    2DUP
+    contractAddress CALLDICT
+    TRUE
+    0 PUSHINT
+    64 PUSHINT
+    s6 s9 s10 XCPU2
+    __gen_writecell_ReportStaticData INLINECALLDICT
+    5 2 REVERSE
+    s0 s3 s3 XCHG3
+    s0 s4 XCHG
+    send CALLDICT
+  }>
+  __gen_NftItem_receive_UpdateSubContent PROC:<{
+    NIP
+  }>
+  recv_internal PROC:<{
+    0 PUSHINT
+    OVER
+    SBITS
+    31 GTINT
+    IF:<{
+      DROP
+      DUP
+      32 PLDU
+    }>
+    s0 s2 XCHG
+    CTOS
+    4 LDU
+    SWAP
+    1 PUSHINT
+    AND
+    1 EQINT
+    IF:<{
+      TRUE
+    }>ELSE<{
+      FALSE
+    }>
+    SWAP
+    LDMSGADDR
+    s2 PUSH
+    s6 s6 XCHG2
+    4 TUPLE
+    __tact_context SETGLOB
+    s0 s2 XCHG
+    IFJMP:<{
+      2DROP
+    }>
+    DUP
+    1607220500 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      __gen_load_NftItem INLINECALLDICT
+      s0 s5 XCHG
+      __gen_read_Transfer INLINECALLDICT
+      s7 POP
+      s10 s11 XCHG
+      s9 s10 XCHG
+      s8 s9 XCHG
+      s7 s8 XCHG
+      6 ROLL
+      __gen_NftItem_receive_Transfer CALLDICT
+      __gen_store_NftItem INLINECALLDICT
+    }>
+    DUP
+    85167505 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      __gen_load_NftItem INLINECALLDICT
+      s0 s5 XCHG
+      __gen_read_OwnershipAssigned INLINECALLDICT
+      s3 POP
+      s6 s7 XCHG
+      s5 s6 XCHG
+      s4 s5 XCHG
+      s3 s4 XCHG
+      ROT
+      __gen_NftItem_receive_OwnershipAssigned CALLDICT
+      __gen_store_NftItem INLINECALLDICT
+    }>
+    DUP
+    801842850 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      __gen_load_NftItem INLINECALLDICT
+      s0 s5 XCHG
+      __gen_read_GetStaticData INLINECALLDICT
+      NIP
+      s4 s5 XCHG
+      s3 s4 XCHG
+      s1 s3 s0 XCHG3
+      __gen_NftItem_receive_GetStaticData CALLDICT
+      __gen_store_NftItem INLINECALLDICT
+    }>
+    3471953359 PUSHINT
+    EQUAL
+    IFJMP:<{
+      __gen_load_NftItem INLINECALLDICT
+      s0 s5 XCHG
+      __gen_read_UpdateSubContent INLINECALLDICT
+      NIP
+      s4 s5 XCHG
+      s3 s4 XCHG
+      s1 s3 s0 XCHG3
+      __gen_NftItem_receive_UpdateSubContent CALLDICT
+      __gen_store_NftItem INLINECALLDICT
+    }>
+    DROP
+    130 THROW
+  }>
+  init_NftItem PROC:<{
+    __gen_NftItem_init CALLDICT
+  }>
+  supported_interfaces PROC:<{
+    123515602279859691144772641439386770278 PUSHINT
+    209801025412363888721030803524359905849 PUSHINT
+  }>
+  get_abi_ipfs PROC:<{
+    x{697066733a2f2f516d584e4b3639746f465872566f5a4437696a71775843687a38724b4c37753645714470466a633846424458644c} PUSHSLICE
+  }>
+}END>c

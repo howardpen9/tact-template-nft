@@ -1,36 +1,36 @@
-message Add {
-    amount: Int as uint32;
+import "Collection";
+
+message TransferTo {
+    ItemId: Int;
+    To: Address;
 }
 
-contract SampleTactContract {
+contract Sample with Collection {
+    collection_owner: Address;
+    next_item_index: Int;
+    is_initialized: Bool;
+    content: Cell?;
+    royalty_params: Cell?;
 
-    owner: Address;
-    counter: Int as uint32;
+    init(collection_owner: Address, is_initialized: Bool, content: Cell?, royalty_params: Cell?){
+        self.collection_owner = collection_owner;
+        self.next_item_index = 0; 
 
-    init(owner: Address) {
-        self.owner = owner;
-        self.counter = 0;
+        self.is_initialized = is_initialized;   // Collection related setting
+        self.content = content;                 // content for the collection
+        self.royalty_params = royalty_params;   // Royalty Setting for collection
     }
-
-    fun add(v: Int) {
-        
-        // Check sender
+    receive("Mint"){
         let ctx: Context = context();
-        require(ctx.sender == self.owner, "Invalid sender");
-        
-        // Update counter
-        self.counter = (self.counter + v);
+        self.mint(ctx.sender);
     }
 
-    receive(msg: Add) {
-        self.add(msg.amount);
+    receive(msg: TransferTo){
+        let ctx: Context = context();
+        self.transferTo(ctx.sender, msg.ItemId, msg.To);
     }
-
-    receive("increment") {
-        self.add(1);
-    }
-
-    get fun counter(): Int {
-        return self.counter;
-    }
+    // Update Content
+    // Update RoyaltyFee
+    // Change Owner of Collection 
 }
+

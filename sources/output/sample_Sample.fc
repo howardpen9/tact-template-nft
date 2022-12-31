@@ -1,0 +1,459 @@
+forall X -> X __tact_not_null(X x) { throw_if(128, null?(x)); return x; }
+
+global (int, slice, int, slice) __tact_context;
+global cell __tact_context_sys;
+
+(int, slice, int, slice) __tact_context_get() inline { return __tact_context; }
+
+() __tact_verify_address(slice address) inline {
+    throw_unless(134, address.slice_bits() != 267);
+}
+
+(slice, slice) __tact_load_address(slice cs) inline {
+    slice raw = cs~load_msg_addr();
+    __tact_verify_address(raw);
+    return (cs, raw);
+}
+
+builder __tact_store_address(builder b, slice address) inline {
+    __tact_verify_address(address);
+    b = b.store_slice(address);
+    return b;
+}
+
+builder __tact_store_address_opt(builder b, slice address) inline {
+    if (null?(address)) {
+        b = b.store_uint(0, 2);
+        return b;
+    } else {
+        return __tact_store_address(b, address);
+    }
+}
+
+slice __tact_compute_contract_address(int chain, cell code, cell data) {
+    var b = begin_cell();
+    b = b.store_uint(0, 2);
+    b = b.store_uint(3, 2);
+    b = b.store_uint(0, 1);
+    b = b.store_ref(code);
+    b = b.store_ref(data);
+    var hash = cell_hash(b.end_cell());
+    var b2 = begin_cell();
+    b2 = b2.store_uint(2, 2);
+    b2 = b2.store_uint(0, 1);
+    b2 = b2.store_int(chain, 8);
+    b2 = b2.store_uint(hash, 256);
+    return b2.end_cell().begin_parse();
+}
+
+int __tact_address_eq(slice a, slice b) inline {
+    return equal_slice_bits(a, b);
+}
+
+cell __tact_dict_set_code(cell dict, int id, cell code) inline {
+    return udict_set_ref(dict, 16, id, code);
+}
+
+cell __tact_dict_get_code(cell dict, int id) inline {
+    var (data, ok) = udict_get_ref?(dict, 16, id);
+    throw_unless(100, ok);
+    return data;
+}
+
+(slice, ((cell))) __gen_read_UpdateCollectionContent(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 1914141847);
+    var v'content = null();
+    if (sc_0~load_int(1)) {
+        v'content = sc_0~load_ref();
+    }
+    return (sc_0, (v'content));
+}
+
+(slice, ((cell))) __gen_read_UpdateRoyaltyParams(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 981308892);
+    var v'royalty_params = null();
+    if (sc_0~load_int(1)) {
+        v'royalty_params = sc_0~load_ref();
+    }
+    return (sc_0, (v'royalty_params));
+}
+
+builder __gen_write_Transfer(builder build_0, (int, int, slice, slice, cell, int, slice) v) inline {
+    var (v'query_id, v'item_index, v'new_owner, v'response_destination, v'custom_payload, v'forward_amount, v'forward_payload) = v;
+    build_0 = store_uint(build_0, 1607220500, 32);
+    build_0 = store_uint(build_0, v'query_id, 64);
+    build_0 = store_int(build_0, v'item_index, 257);
+    build_0 = __tact_store_address(build_0, v'new_owner);
+    build_0 = __tact_store_address_opt(build_0, v'response_destination);
+    if (null?(v'custom_payload)) {
+        build_0 = store_int(build_0, false, 1);
+    } else {
+        build_0 = store_int(build_0, true, 1);
+        build_0 = store_ref(build_0, v'custom_payload);
+    }
+    build_0 = store_coins(build_0, v'forward_amount);
+    if (null?(v'forward_payload)) {
+        build_0 = store_int(build_0, false, 1);
+    } else {
+        build_0 = store_int(build_0, true, 1);
+        build_0 = store_slice(build_0, v'forward_payload);
+    }
+    return build_0;
+}
+
+cell __gen_writecell_Transfer((int, int, slice, slice, cell, int, slice) v) inline {
+    return __gen_write_Transfer(begin_cell(), v).end_cell();
+}
+
+(slice, ((int, slice))) __gen_read_TransferTo(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2306576542);
+    var v'ItemId = sc_0~load_int(257);
+    var v'To = sc_0~__tact_load_address();
+    return (sc_0, (v'ItemId, v'To));
+}
+
+builder __gen_write_NftItem(builder build_0, (slice, slice, int, int, cell) v) inline {
+    var (v'collection, v'master, v'item_index, v'is_initialized, v'sub_content) = v;
+    build_0 = __tact_store_address(build_0, v'collection);
+    build_0 = __tact_store_address(build_0, v'master);
+    build_0 = store_int(build_0, v'item_index, 257);
+    build_0 = store_int(build_0, v'is_initialized, 1);
+    if (null?(v'sub_content)) {
+        build_0 = store_int(build_0, false, 1);
+    } else {
+        build_0 = store_int(build_0, true, 1);
+        build_0 = store_ref(build_0, v'sub_content);
+    }
+    return build_0;
+}
+
+builder __gen_write_Sample(builder build_0, (slice, int, int, cell, cell) v) inline {
+    var (v'collection_owner, v'next_item_index, v'is_initialized, v'content, v'royalty_params) = v;
+    build_0 = __tact_store_address(build_0, v'collection_owner);
+    build_0 = store_int(build_0, v'next_item_index, 257);
+    build_0 = store_int(build_0, v'is_initialized, 1);
+    if (null?(v'content)) {
+        build_0 = store_int(build_0, false, 1);
+    } else {
+        build_0 = store_int(build_0, true, 1);
+        build_0 = store_ref(build_0, v'content);
+    }
+    if (null?(v'royalty_params)) {
+        build_0 = store_int(build_0, false, 1);
+    } else {
+        build_0 = store_int(build_0, true, 1);
+        build_0 = store_ref(build_0, v'royalty_params);
+    }
+    return build_0;
+}
+
+(slice, ((slice, int, int, cell, cell))) __gen_read_Sample(slice sc_0) inline {
+    var v'collection_owner = sc_0~__tact_load_address();
+    var v'next_item_index = sc_0~load_int(257);
+    var v'is_initialized = sc_0~load_int(1);
+    var v'content = null();
+    if (sc_0~load_int(1)) {
+        v'content = sc_0~load_ref();
+    }
+    var v'royalty_params = null();
+    if (sc_0~load_int(1)) {
+        v'royalty_params = sc_0~load_ref();
+    }
+    return (sc_0, (v'collection_owner, v'next_item_index, v'is_initialized, v'content, v'royalty_params));
+}
+
+(slice, int, int, cell, cell) __gen_load_Sample() inline {
+    slice sc = get_data().begin_parse();
+    __tact_context_sys = sc~load_ref();
+    return sc~__gen_read_Sample();
+}
+
+() __gen_store_Sample((slice, int, int, cell, cell) v) impure inline {
+    builder b = begin_cell();
+    b = b.store_ref(__tact_context_sys);
+    b = __gen_write_Sample(b, v);
+    set_data(b.end_cell());
+}
+
+builder storeBool(builder $s, int $value) impure {
+    if ($value) {
+        return store_int($s, (- 1), 1);
+    } else {
+        return store_int($s, 0, 1);
+    }
+}
+
+cell emptyCell() impure {
+    return end_cell(begin_cell());
+}
+
+slice __gen_Cell_asSlice(cell $self) impure {
+    var ($self) = $self;
+    return begin_parse($self);
+}
+
+slice emptySlice() impure {
+    return __gen_Cell_asSlice(emptyCell());
+}
+
+slice contractAddress((cell, cell) $s) impure {
+    var (($s'code, $s'data)) = $s;
+    return __tact_compute_contract_address(0, $s'code, $s'data);
+}
+
+() send((int, slice, int, int, cell, cell, cell) $params) impure {
+    var (($params'bounce, $params'to, $params'value, $params'mode, $params'body, $params'code, $params'data)) = $params;
+    builder $b = begin_cell();
+    $b = store_int($b, 1, 2);
+    $b = storeBool($b, $params'bounce);
+    $b = store_int($b, 0, 3);
+    $b = __tact_store_address($b, $params'to);
+    $b = store_coins($b, $params'value);
+    $b = store_int($b, 0, ((((1 + 4) + 4) + 64) + 32));
+    if (((~ null?($params'code)) | (~ null?($params'data)))) {
+        $b = storeBool($b, true);
+        builder $bc = begin_cell();
+        $bc = storeBool($bc, false);
+        $bc = storeBool($bc, false);
+        if ((~ null?($params'code))) {
+            $bc = storeBool($bc, true);
+            $bc = store_ref($bc, __tact_not_null($params'code));
+        } else {
+            $bc = storeBool($bc, false);
+        }
+        if ((~ null?($params'data))) {
+            $bc = storeBool($bc, true);
+            $bc = store_ref($bc, __tact_not_null($params'data));
+        } else {
+            $bc = storeBool($bc, false);
+        }
+        $bc = storeBool($bc, false);
+        $b = storeBool($b, true);
+        $b = store_ref($b, end_cell($bc));
+    } else {
+        $b = storeBool($b, false);
+    }
+    cell $body = $params'body;
+    if ((~ null?($body))) {
+        $b = storeBool($b, true);
+        $b = store_ref($b, __tact_not_null($body));
+    } else {
+        $b = storeBool($b, false);
+    }
+    cell $c = end_cell($b);
+    send_raw_message($c, $params'mode);
+}
+
+cell __gen_NftItem_init(cell sys', slice $collection, slice $master, int $item_index, int $is_initialized) {
+    var (($self'collection, $self'master, $self'item_index, $self'is_initialized, $self'sub_content)) = (null(), null(), null(), null(), null());
+    $self'collection = $collection;
+    $self'master = $master;
+    $self'item_index = $item_index;
+    $self'is_initialized = $is_initialized;
+    var b' = begin_cell();
+    b' = b'.store_ref(sys');
+    b' = __gen_write_NftItem(b', ($self'collection, $self'master, $self'item_index, $self'is_initialized, $self'sub_content));
+    return b'.end_cell();
+}
+
+(cell, cell) __gen_NftItem_init_child(cell sys', slice $collection, slice $master, int $item_index, int $is_initialized) {
+    slice sc' = sys'.begin_parse();
+    cell source = sc'~load_dict();
+    cell mine = __tact_dict_get_code(source, 31210);
+    cell contracts = new_dict();
+    cell code_31210 = __tact_dict_get_code(source, 31210);
+    contracts = __tact_dict_set_code(contracts, 31210, code_31210);
+    cell sys = begin_cell().store_dict(contracts).end_cell();
+    return (mine, __gen_NftItem_init(sys, $collection, $master, $item_index, $is_initialized));
+}
+
+cell __gen_Sample_init(cell sys', slice $collection_owner, int $is_initialized, cell $content, cell $royalty_params) {
+    var (($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params)) = (null(), null(), null(), null(), null());
+    $self'collection_owner = $collection_owner;
+    $self'next_item_index = 0;
+    $self'is_initialized = $is_initialized;
+    $self'content = $content;
+    $self'royalty_params = $royalty_params;
+    var b' = begin_cell();
+    b' = b'.store_ref(sys');
+    b' = __gen_write_Sample(b', ($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params));
+    return b'.end_cell();
+}
+
+((slice, int, int, cell, cell), (cell, cell)) __gen_Sample_getNftItemInit((slice, int, int, cell, cell) $self, int $index_id) impure {
+    var (($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params)) = $self;
+    return (($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params), __gen_NftItem_init_child(__tact_context_sys, my_address(), $self'collection_owner, $index_id, $self'is_initialized));
+}
+
+((slice, int, int, cell, cell), ()) __gen_Sample_mint((slice, int, int, cell, cell) $self, slice $sender) impure {
+    var (($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params)) = $self;
+    throw_unless(62742, ($self'next_item_index >= 0));
+    var ($nft_init'code, $nft_init'data) = ($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params)~__gen_Sample_getNftItemInit($self'next_item_index);
+    slice $nftItemAddress = contractAddress(($nft_init'code, $nft_init'data));
+    send((false, $nftItemAddress, 0, 64, __gen_writecell_Transfer((0, $self'next_item_index, $sender, $self'collection_owner, emptyCell(), 0, emptySlice())), $nft_init'code, $nft_init'data));
+    $self'next_item_index = ($self'next_item_index + 1);
+    return (($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params), ());
+}
+
+((slice, int, int, cell, cell), ()) __gen_Sample_transferTo((slice, int, int, cell, cell) $self, slice $ItemOwner, int $ItemId, slice $To) impure {
+    var (($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params)) = $self;
+    var ($nft_init'code, $nft_init'data) = ($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params)~__gen_Sample_getNftItemInit($ItemId);
+    slice $nftItemAddress = contractAddress(($nft_init'code, $nft_init'data));
+    send((false, $nftItemAddress, 0, 64, __gen_writecell_Transfer((0, $ItemId, $To, $ItemOwner, emptyCell(), 10, emptySlice())), $nft_init'code, $nft_init'data));
+    return (($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params), ());
+}
+
+(int, slice, cell) __gen_Sample_get_collection_data((slice, int, int, cell, cell) $self) impure {
+    var (($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params)) = $self;
+    return ($self'next_item_index, $self'collection_owner, $self'content);
+}
+
+_ __gen_get_get_collection_data() method_id(102491) {
+    var self = __gen_load_Sample();
+    var res = __gen_Sample_get_collection_data(self);
+    return res;
+}
+
+slice __gen_Sample_get_nft_address_by_index((slice, int, int, cell, cell) $self, int $item_index) impure {
+    var (($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params)) = $self;
+    var ($initCode'code, $initCode'data) = ($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params)~__gen_Sample_getNftItemInit($item_index);
+    return contractAddress(($initCode'code, $initCode'data));
+}
+
+_ __gen_get_get_nft_address_by_index(int $item_index) method_id(92067) {
+    var self = __gen_load_Sample();
+    var res = __gen_Sample_get_nft_address_by_index(self, $item_index);
+    return res;
+}
+
+cell __gen_Sample_get_nft_content((slice, int, int, cell, cell) $self, int $item_index, cell $individual_content) impure {
+    var (($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params)) = $self;
+    return $self'content;
+}
+
+_ __gen_get_get_nft_content(int $item_index,cell $individual_content) method_id(68445) {
+    var self = __gen_load_Sample();
+    var res = __gen_Sample_get_nft_content(self, $item_index, $individual_content);
+    return res;
+}
+
+slice __gen_Sample_getCollectionAddress((slice, int, int, cell, cell) $self) impure {
+    var (($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params)) = $self;
+    return my_address();
+}
+
+_ __gen_get_getCollectionAddress() method_id(106463) {
+    var self = __gen_load_Sample();
+    var res = __gen_Sample_getCollectionAddress(self);
+    return res;
+}
+
+((slice, int, int, cell, cell), ()) __gen_Sample_receive_comment_247c7bd5f39e2258d80ac36a0419a1ab5779757825a6cc0e915368f00610a18a((slice, int, int, cell, cell) $self) impure {
+    var ($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params) = $self;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    ($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params)~__gen_Sample_mint($ctx'sender);
+    return (($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params), ());
+}
+
+(((slice, int, int, cell, cell)), ()) __gen_Sample_receive_TransferTo((slice, int, int, cell, cell) $self, (int, slice) $msg) impure {
+    var ($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params) = $self;
+    var ($msg'ItemId, $msg'To) = $msg;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    ($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params)~__gen_Sample_transferTo($ctx'sender, $msg'ItemId, $msg'To);
+    return (($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params), ());
+}
+
+(((slice, int, int, cell, cell)), ()) __gen_Sample_receive_UpdateCollectionContent((slice, int, int, cell, cell) $self, (cell) $msg) impure {
+    var ($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params) = $self;
+    var ($msg'content) = $msg;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    throw_unless(51134, __tact_address_eq($ctx'sender, $self'collection_owner));
+    $self'content = $msg'content;
+    return (($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params), ());
+}
+
+(((slice, int, int, cell, cell)), ()) __gen_Sample_receive_UpdateRoyaltyParams((slice, int, int, cell, cell) $self, (cell) $msg) impure {
+    var ($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params) = $self;
+    var ($msg'royalty_params) = $msg;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    throw_unless(51134, __tact_address_eq($ctx'sender, $self'collection_owner));
+    $self'royalty_params = $msg'royalty_params;
+    return (($self'collection_owner, $self'next_item_index, $self'is_initialized, $self'content, $self'royalty_params), ());
+}
+
+
+() recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
+    
+    ;; Parse incoming message
+    int op = 0;
+    if (slice_bits(in_msg) >= 32) {
+        op = in_msg.preload_uint(32);
+    }
+    var cs = in_msg_cell.begin_parse();
+    var msg_flags = cs~load_uint(4);
+    var msg_bounced = ((msg_flags & 1) == 1 ? true : false);
+    slice msg_sender_addr = cs~load_msg_addr();
+    __tact_context = (msg_bounced, msg_sender_addr, msg_value, cs);
+    
+    ;; Handle bounced messages
+    if (msg_bounced) {
+        return ();
+    }
+    
+    ;; Receive TransferTo message
+    if (op == 2306576542) {
+        var self = __gen_load_Sample();
+        var msg = in_msg~__gen_read_TransferTo();
+        self~__gen_Sample_receive_TransferTo(msg);
+        __gen_store_Sample(self);
+        return ();
+    }
+    
+    ;; Receive UpdateCollectionContent message
+    if (op == 1914141847) {
+        var self = __gen_load_Sample();
+        var msg = in_msg~__gen_read_UpdateCollectionContent();
+        self~__gen_Sample_receive_UpdateCollectionContent(msg);
+        __gen_store_Sample(self);
+        return ();
+    }
+    
+    ;; Receive UpdateRoyaltyParams message
+    if (op == 981308892) {
+        var self = __gen_load_Sample();
+        var msg = in_msg~__gen_read_UpdateRoyaltyParams();
+        self~__gen_Sample_receive_UpdateRoyaltyParams(msg);
+        __gen_store_Sample(self);
+        return ();
+    }
+    
+    ;; Text Receivers
+    if (op == 0) {
+        var text_op = slice_hash(in_msg);
+        
+        ;; Receive "Mint" message
+        if (text_op == 0x247c7bd5f39e2258d80ac36a0419a1ab5779757825a6cc0e915368f00610a18a) {
+            var self = __gen_load_Sample();
+            self~__gen_Sample_receive_comment_247c7bd5f39e2258d80ac36a0419a1ab5779757825a6cc0e915368f00610a18a();
+            __gen_store_Sample(self);
+            return ();
+        }
+    }
+    
+    throw(130);
+}
+
+cell init_Sample(cell sys', slice collection_owner, int is_initialized, cell content, cell royalty_params) method_id {
+    return __gen_Sample_init(sys', collection_owner, is_initialized, content, royalty_params);
+}
+
+_ supported_interfaces() method_id {
+    return (
+        "org.ton.introspection.v0"H >> 128,
+        "org.ton.abi.ipfs.v0"H >> 128
+    );
+}
+
+_ get_abi_ipfs() {
+    return "ipfs://QmQ78YufNnPnXxd2fyqQDEDFLeALejZnNuJtyUZqJ6Ytzm";
+}
